@@ -6,7 +6,7 @@
 #    By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/20 14:52:17 by gguiulfo          #+#    #+#              #
-#    Updated: 2017/04/24 02:38:10 by gguiulfo         ###   ########.fr        #
+#    Updated: 2017/04/24 06:28:01 by gguiulfo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,16 +50,27 @@ fclean: clean
 
 re: fclean all
 
-test: $(TEST)
-
-$(TEST):
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o test test.c
-
-$(STATS):
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o stats stats.c
-
-$(LIST):
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o list list.c
-
-$(SORT):
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o sort sort.c
+# test: $(TEST)
+#
+# stats: $(STATS)
+#
+# list: $(LIST)
+#
+# sort: $(SORT)
+#
+# recur: $(RECUR)
+#
+# $(TEST):
+# 	@$(CC) $(CFLAGS) $(LDFLAGS) -o test test.c
+#
+# $(STATS):
+# 	@$(CC) $(CFLAGS) $(LDFLAGS) -o stats stats.c
+#
+# $(LIST):
+# 	@$(CC) $(CFLAGS) $(LDFLAGS) -o list list.c
+#
+# $(SORT):
+# 	@$(CC) $(CFLAGS) $(LDFLAGS) -o sort sort.c
+#
+# $(RECUR)
+# 	@$(CC) $(CFLAGS) $(LDFLAGS) -o recur recur.c

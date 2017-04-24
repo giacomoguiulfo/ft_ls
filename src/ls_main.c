@@ -6,14 +6,15 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 14:58:56 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/24 00:29:18 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/04/24 04:17:39 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-int		main(void)
+int		main(int argc, char **argv)
 {
+	(void)argv;
 	if (argc == 1)
 		;
 	else if (argc > 1)
