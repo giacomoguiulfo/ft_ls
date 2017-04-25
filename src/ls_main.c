@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 14:58:56 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/25 07:41:37 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/04/25 08:03:00 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		ls_dir_content(t_dnarr **files, char *path)
 	DIR				*dirp;
 	struct dirent	*dp;
 	t_file			*tmp;
-// int i =0;
+	
 	if ((dirp = opendir(path)) == NULL)
 		return (-1);
 	*files = dnarr_create(sizeof(t_file), 50); // TODO: t_file or t_file *
@@ -69,7 +69,10 @@ int		ls_print_dir(char *path)
 
 	i = 0;
 	if (ls_dir_content(&files, path) == -1)
+	{
 		ft_dprintf(2, "ls: %s: %s\n", "path", strerror(errno));
+		return (-1);
+	}
 	if (files->end == 0)
 	{
 		dnarr_clrdestroy(files);
@@ -83,24 +86,26 @@ int		ls_print_dir(char *path)
 		while (i < files->end)
 		{
 			// printf("%s\n", "hello");
-			printf("Current Name: %s\n", ((t_file *)files->contents[i])->name);;
-			printf("Current Path: %s\n", ((t_file *)files->contents[i])->path);;
-			printf("Is dir? %d\n", ft_isdir(((t_file *)files->contents[i])->statbuf.st_mode));
-			printf("%d\n", ((t_file *)files->contents[i])->statbuf.st_mode);
-			printf("%d\n", S_ISDIR(((t_file *)files->contents[i])->statbuf.st_mode));
+			// printf("Current Name: %s\n", ((t_file *)files->contents[i])->name);;
+			// printf("Current Path: %s\n", ((t_file *)files->contents[i])->path);;
+			// printf("Is dir? %d\n", ft_isdir(((t_file *)files->contents[i])->statbuf.st_mode));
+			// printf("%d\n", ((t_file *)files->contents[i])->statbuf.st_mode);
+			// printf("%d\n", S_ISDIR(((t_file *)files->contents[i])->statbuf.st_mode));
 			// exit(1);
-			break ;
 			if (S_ISDIR(((t_file *)files->contents[i])->statbuf.st_mode)
 				&& !(ft_strcmp(((t_file *)files->contents[i])->name, ".") == 0
 				|| ft_strcmp(((t_file *)files->contents[i])->name, "..") == 0))
 			{
-				printf("%s\n", "hello");
+				// printf("%s\n", "hello");
 				printf("\n%s:\n", ((t_file *)files->contents[i])->path);
 				ls_print_dir(((t_file *)files->contents[i])->path);
 			}
 			++i;
 		}
 	}
+	i = 0;
+	while (i < files->end)
+		free(((t_file *)files->contents[i++])->path);
 	dnarr_clrdestroy(files);
 	return (0);
 }
