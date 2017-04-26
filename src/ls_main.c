@@ -6,19 +6,31 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 14:58:56 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/25 08:03:00 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/04/25 20:59:52 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
 #include <stdio.h> // Dont forget to delete
+typedef int (*DArray_compare) (const void *a, const void *b);
 
 int		ft_perror(const char *s)
 {
 	ft_dprintf(2, "%{red}%s%s\n%{eoc}", s, strerror(errno));
 	return (-1);
 }
+
+int		cmpfunc(char **a, char **b)
+{
+	char *str1;
+	char *str2;
+
+	str1 = ((t_file *)(*a))->name;
+	str2 = ((t_file *)(*b))->name;
+	return (strcmp(str1, str2));
+}
+
 
 int	ft_isdir(mode_t mode)
 {
@@ -35,7 +47,7 @@ int		ls_dir_content(t_dnarr **files, char *path)
 	DIR				*dirp;
 	struct dirent	*dp;
 	t_file			*tmp;
-	
+
 	if ((dirp = opendir(path)) == NULL)
 		return (-1);
 	*files = dnarr_create(sizeof(t_file), 50); // TODO: t_file or t_file *
@@ -62,6 +74,7 @@ int		ls_dir_content(t_dnarr **files, char *path)
 
 int recursive = 1;
 
+
 int		ls_print_dir(char *path)
 {
 	t_dnarr *files;
@@ -78,6 +91,7 @@ int		ls_print_dir(char *path)
 		dnarr_clrdestroy(files);
 		return (-1);
 	}
+	qsort(files->contents, dnarr_count(files), sizeof(void *), (DArray_compare) cmpfunc);
 	while (i < files->end)
 		ft_printf("%s\n", ((t_file *)files->contents[i++])->name);
 	if (recursive)
@@ -97,7 +111,7 @@ int		ls_print_dir(char *path)
 				|| ft_strcmp(((t_file *)files->contents[i])->name, "..") == 0))
 			{
 				// printf("%s\n", "hello");
-				printf("\n%s:\n", ((t_file *)files->contents[i])->path);
+				ft_printf("\n%s:\n", ((t_file *)files->contents[i])->path);
 				ls_print_dir(((t_file *)files->contents[i])->path);
 			}
 			++i;
