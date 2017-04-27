@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 08:50:51 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/27 09:48:26 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/04/27 11:56:20 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,13 @@ int		ls_dir_content(t_dnarr **files, char *path)
 {
 	DIR				*dirp;
 	struct dirent	*dp;
-	t_file			*tmp;
+	t_file			*tmp = NULL;
 
+
+// int i = 0;
 	if ((dirp = opendir(path)) == NULL)
 		return (-1);
-	*files = dnarr_create(sizeof(t_file), 100); // TODO: t_file or t_file *
+	*files = dnarr_create(sizeof(t_file), 50); // TODO: t_file or t_file *
 	while ((dp = readdir(dirp)) != NULL)
 	{
 		if (dp->d_name[0] == '.')
@@ -61,17 +63,21 @@ int		ls_dir_content(t_dnarr **files, char *path)
 		}
 		dnarr_push(*files, tmp);
 		// free(tmp->path);
+		// ft_printf("%s %d\n", "Here", i++);
 	}
+	// ft_printf("%s: %d\n", "Capacity", dnarr_count(*files));
+	// ft_printf("%s: %d\n", "Max", dnarr_max(*files));
 	closedir(dirp);
 	return (0);
 }
 
 int		ls_print_dir(char *path)
 {
-	t_dnarr *files;
+	t_dnarr *files = NULL;
 	int i;
 
 	i = 0;
+	// files = dnarr_create(sizeof(t_file), 100); // TODO: t_file or t_file *
 	if (ls_dir_content(&files, path) == -1)
 	{
 		ft_dprintf(2, "ls: %s: %s\n", "path", strerror(errno));
@@ -79,12 +85,12 @@ int		ls_print_dir(char *path)
 	}
 	if (files->end == 0)
 	{
-		// dnarr_clrdestroy(files);
+		dnarr_clrdestroy(files);
 		return (-1);
 	}
 	// ft_printf("Debug: %s\n", );
 	// ft_bubblesort(files->contents, sizeof(void *), dnarr_count(files) - 1, (comps) cmpfunc);
-	// qsort(files->contents, dnarr_count(files), sizeof(void *), (comps) cmpfunc);
+	// qsort(files->contents, dnarr_count(files), sizeof(void *), (t_sortcast) cmpfunc);
 	// ft_qsort(files->contents, dnarr_count(files) - 1, sizeof(void *), (comps) cmpfunc);
 	ft_qsort(files->contents, 0, dnarr_count(files) - 1, (t_sortcast) cmpfunc);
 	while (i < files->end)
@@ -121,6 +127,22 @@ int		ls_print_dir(char *path)
 	// TODO: Make another one of this ones for ->name
 	// ft_printf("Current Name: %s\n", ((t_file *)files->contents[i])->name);;
 	// ft_printf("Current Path: %s\n", ((t_file *)files->contents[i])->path);;
-	dnarr_clrdestroy(files);
+	// ft_printf("------------------------- END: %d\n", files->end);
+	// ft_printf("------------------------- MAX: %d\n", files->max);
+	// dnarr_clrdestroy(files);
+	// free(files->contents[0]);
+	i = 0;
+	// while (i < files->end)
+	// 	free(files->contents[i++]);
+	// free(files->contents);
+	// free(files);
+	dnarr_clr(files);
+	dnarr_destroy(files);
+	// free(files);
+	// for (int j = 0; j < files->end; j++)
+	// {
+	// 	// if (files->contents[i])
+	// 		// free(files->contents[i]);
+	// }
 	return (0);
 }
