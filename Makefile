@@ -6,7 +6,7 @@
 #    By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/20 14:52:17 by gguiulfo          #+#    #+#              #
-#    Updated: 2017/04/24 06:28:01 by gguiulfo         ###   ########.fr        #
+#    Updated: 2017/04/27 11:55:04 by gguiulfo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,12 @@ NAME		:= ft_ls
 CC			:= gcc
 CFLAGS		+= -Wall -Wextra -Werror
 CFLAGS		+= -I includes -I libft/includes
-LDFLAGS		:= -L libft/ -lft
+LDFLAGS		+= -L libft/ -lft
+# LDFLAGS		+= alloc_wrap.c
 
 LIBFT		:= libft/libft.a
 
-FILES		:= ls_main
+FILES		:= ls_main ls_print ls_args
 
 SRC = $(addprefix src/, $(addsuffix .c, $(FILES)))
 OBJ = $(SRC:.c=.o)
@@ -49,6 +50,7 @@ fclean: clean
 	@echo "\033[32mRemoved Executable\033[0m"
 
 re: fclean all
+
 
 # test: $(TEST)
 #
