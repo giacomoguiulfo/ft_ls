@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 08:50:51 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/27 11:56:20 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/04/27 17:21:32 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,18 @@ extern int g_ls_opts;
 // 	return (0);
 // }
 
+char	*ls_pathname(char *path)
+{
+	char *name;
 
+	name = path;
+	while (*path)
+	{
+		if (*path++ == '/')
+			name = path;
+	}
+	return (name);
+}
 
 int		cmpfunc(void *a, void *b)
 {
@@ -52,7 +63,7 @@ int		ls_dir_content(t_dnarr **files, char *path)
 		if (dp->d_name[0] == '.')
 			continue ;
 		tmp = dnarr_new(*files);
-		ft_asprintf(&tmp->path, "%s/%s", path, dp->d_name);
+		ft_asprintf(&tmp->path, "%s/%s", path, dp->d_name); // TODO: DO another case for the root dir
 		tmp->name = ft_strdup(dp->d_name);
 		if (lstat(tmp->path, &(tmp->statbuf)) == -1)
 		{
@@ -80,7 +91,7 @@ int		ls_print_dir(char *path)
 	// files = dnarr_create(sizeof(t_file), 100); // TODO: t_file or t_file *
 	if (ls_dir_content(&files, path) == -1)
 	{
-		ft_dprintf(2, "ls: %s: %s\n", "path", strerror(errno));
+		ft_dprintf(2, "ls: %s: %s\n", ls_pathname(path), strerror(errno));
 		return (-1);
 	}
 	if (files->end == 0)
