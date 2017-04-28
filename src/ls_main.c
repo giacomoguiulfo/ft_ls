@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 14:58:56 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/27 09:18:29 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/04/27 15:38:46 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		ls_parser(int argc, char **argv)
 	}
 	if (i < argc)
 	{
-		if (ls_args(argv[i]) == -1)
+		if (ls_args(i, argc, argv) == -1)
 			return (-1);
 	}
 	else
@@ -85,9 +85,8 @@ int		main(int argc, char **argv)
 {
 	if (argc == 1)
 	{
-		// if (ls_print_dir(".") == -1)
-		// 	return (-1);
-		;
+		if (ls_print_dir(".") == -1)
+			return (-1);
 	}
 	else if (argc > 1)
 	{
