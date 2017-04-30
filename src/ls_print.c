@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 08:50:51 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/27 17:21:32 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/04/29 20:51:36 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,26 @@ extern int g_ls_opts;
 // 		return (1);
 // 	return (0);
 // }
+
+void	ls_dir_l(t_dnarr *files)
+{
+	long long blocks;
+	int		len;
+	int		i;
+
+	i = 0;
+	blocks = 0;
+	len = files->end;
+	while (i < len)
+	{
+		blocks += ((t_file *)files->contents[i++])->statbuf.st_blocks;
+	}
+	ft_printf("total %lld\n", blocks);
+	i = 0;
+	while (i < len)
+		ft_printf("%s\n", ((t_file *)files->contents[i++])->name);
+
+}
 
 char	*ls_pathname(char *path)
 {
@@ -60,7 +80,7 @@ int		ls_dir_content(t_dnarr **files, char *path)
 	*files = dnarr_create(sizeof(t_file), 50); // TODO: t_file or t_file *
 	while ((dp = readdir(dirp)) != NULL)
 	{
-		if (dp->d_name[0] == '.')
+		if (dp->d_name[0] == '.' && !(g_ls_opts & OPT_a))
 			continue ;
 		tmp = dnarr_new(*files);
 		ft_asprintf(&tmp->path, "%s/%s", path, dp->d_name); // TODO: DO another case for the root dir
@@ -104,8 +124,11 @@ int		ls_print_dir(char *path)
 	// qsort(files->contents, dnarr_count(files), sizeof(void *), (t_sortcast) cmpfunc);
 	// ft_qsort(files->contents, dnarr_count(files) - 1, sizeof(void *), (comps) cmpfunc);
 	ft_qsort(files->contents, 0, dnarr_count(files) - 1, (t_sortcast) cmpfunc);
-	while (i < files->end)
-		ft_printf("%s\n", ((t_file *)files->contents[i++])->name);
+	if (g_ls_opts & OPT_l)
+		ls_dir_l(files);
+	else
+		while (i < files->end)
+			ft_printf("%s\n", ((t_file *)files->contents[i++])->name);
 	if (g_ls_opts & OPT_R)
 	{
 		i = 0;
