@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 08:50:51 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/29 20:51:36 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/04/30 03:49:21 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,52 @@ extern int g_ls_opts;
 // 	return (0);
 // }
 
+void	ls_file_l(t_file *file, int *padding)
+{
+	struct passwd	*pwd;
+	struct group	*grp;
+
+	ls_print_type(file->statbuf.st_mode);
+	ls_print_permissions(file->statbuf.st_mode);
+	ft_putstr(listxattr(file->path, 0, 0, XATTR_NOFOLLOW) > 0 ? "@" : " ");
+	ft_printf(" %*d", padding[0], file->statbuf.st_nlink); // TODO: Needs good formatting
+	if ((pwd = getpwuid(file->statbuf.st_uid)) != NULL)
+		ft_printf(" %-*s", padding[1], pwd->pw_name); // TODO: Needs good formatting
+	else
+		ft_printf(" %-8d", file->statbuf.st_uid);
+	if ((grp = getgrgid(file->statbuf.st_gid)) != NULL)
+		ft_printf("  %-*s", padding[2], grp->gr_name); // TODO: Needs good formatting
+	else
+		ft_printf("  %-8d", file->statbuf.st_gid);
+	ft_printf("  %*d", padding[3], (intmax_t)file->statbuf.st_size); // TODO: Needs good formatting
+	ls_lm_time(file->statbuf.st_mtime);
+	ft_printf(" %s", file->name); // TODO: Needs good formatting
+	if (S_ISLNK(file->statbuf.st_mode))
+		ls_print_link(file->path);
+	ft_putchar('\n');
+}
+
 void	ls_dir_l(t_dnarr *files)
 {
-	long long blocks;
-	int		len;
-	int		i;
+	long long	blocks;
+	int			padding[4];
+	int			len;
+	int			i;
 
+	ft_bzero(padding, sizeof(int) * 4);
 	i = 0;
 	blocks = 0;
 	len = files->end;
 	while (i < len)
 	{
+		ls_padding_l(padding, ((t_file *)files->contents[i])->statbuf);
 		blocks += ((t_file *)files->contents[i++])->statbuf.st_blocks;
 	}
 	ft_printf("total %lld\n", blocks);
 	i = 0;
 	while (i < len)
-		ft_printf("%s\n", ((t_file *)files->contents[i++])->name);
+		// ft_printf("%s\n", ((t_file *)files->contents[i++]));
+		ls_file_l((t_file *)files->contents[i++], padding);
 
 }
 

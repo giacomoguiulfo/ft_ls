@@ -6,15 +6,17 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 09:01:18 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/29 20:45:30 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/04/30 01:28:00 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
+extern int g_ls_opts;
+
 int		ls_args(int i, int argc, char **argv)
 {
-	DIR *dir;
+	// DIR *dir;
 	t_dnarr *dirs;
 	t_dnarr *files;
 	t_dnarr *naf;
@@ -48,9 +50,10 @@ int		ls_args(int i, int argc, char **argv)
 		// ft_printf("tmp->path: [%s]\n", tmp->path);
 		// ft_printf("tmp->name: [%s]\n", tmp->name);
 		// if (S_ISDIR(tmp->statbuf.st_mode))
-		if ((dir = opendir(tmp->path)) != NULL)
+		// if ((dir = opendir(tmp->path)) != NULL)
+		if (stat(argv[i], &tmp->statbuf) != 1 && S_ISDIR(tmp->statbuf.st_mode))
 		{
-			closedir(dir);
+			// closedir(dir);
 			// ft_printf("---------gfds---------[%s]\n", argv[i]);
 			dnarr_push(dirs, tmp);
 		}
@@ -68,14 +71,19 @@ int		ls_args(int i, int argc, char **argv)
 	{
 		ft_qsort(naf->contents, 0, dnarr_count(naf) - 1, (t_sortcast) ft_strcmp);
 		while (j < naf->end)
-			ft_dprintf(2, "ls: %s: %s\n", (char *)naf->contents[j++], strerror(errno));
+			ft_dprintf(2, "ls: %s: %s\n", (char *)naf->contents[j++], strerror(errno)); // TODO: Instead of ls it could be argv[0]
 	}
 	j = 0;
 	if (j < files->end)
 	{
 		ft_qsort(files->contents, 0, dnarr_count(files) - 1, (t_sortcast) ft_strcmp);
 		while (j < files->end)
-			ft_printf("%s\n", (char *)files->contents[j++]);
+		{
+			// if (g_ls_opts & OPT_l)
+				// handle file function -> that covers long formatting/ padding/ etc // TODO: do this...
+			// else
+				ft_printf("%s\n", (char *)files->contents[j++]);
+		}
 	}
 	j = 0;
 	if (j < dirs->end)
@@ -84,8 +92,9 @@ int		ls_args(int i, int argc, char **argv)
 		// ft_printf("%s\n", "---------------------here");
 		while (j < dirs->end)
 		{
-			if (!(((t_file *)dirs->contents[j])->path[0] == '/') && dirs->end > 1)
-				ft_printf("%s%s:\n", (files->end > 0 || naf->end > 0 || j) ? "\n" : "", ((t_file *)dirs->contents[j])->path);
+			if (!(((t_file *)dirs->contents[j])->path[0] == '/')) // TODO: Check this
+			// if (!(((t_file *)dirs->contents[j])->path[0] == '/') && dirs->end > 1) // TODO: Check this
+				ft_printf("%s%s:\n", (files->end > 0 || j) ? "\n" : "", ((t_file *)dirs->contents[j])->path);
 			ls_print_dir(((t_file *)dirs->contents[j++])->path);
 		}
 	// // 		ft_dprintf(2, "ls: %s: %s\n", (char *)dirs->contents[j++], strerror(errno));
