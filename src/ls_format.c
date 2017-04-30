@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/29 19:54:11 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/30 03:51:46 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/04/30 06:40:14 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ void	ls_lm_time(time_t var_time)
 	currtime = time(0);
 	tmp = ctime(&var_time);
 	if (ABS(currtime - var_time) > 15780000)
-		ft_printf(" %2.2s %3.3s  %4.4s", &tmp[8], &tmp[4], &tmp[20]);
+		ft_printf(" %3.3s %2.2s  %4.4s", &tmp[4], &tmp[8], &tmp[20]);
 	else
-		ft_printf(" %2.2s %3.3s %5.5s", &tmp[8], &tmp[4], &tmp[11]);
+		ft_printf(" %3.3s %2.2s %5.5s", &tmp[4], &tmp[8], &tmp[11]);
 }
 
 void	ls_print_link(char *path)

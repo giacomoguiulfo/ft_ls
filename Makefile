@@ -6,7 +6,7 @@
 #    By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/20 14:52:17 by gguiulfo          #+#    #+#              #
-#    Updated: 2017/04/27 11:55:04 by gguiulfo         ###   ########.fr        #
+#    Updated: 2017/04/30 06:06:18 by gguiulfo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LDFLAGS		+= -L libft/ -lft
 
 LIBFT		:= libft/libft.a
 
-FILES		:= ls_main ls_print ls_args
+FILES		:= ls_main ls_print ls_args ls_format ls_multi
 
 SRC = $(addprefix src/, $(addsuffix .c, $(FILES)))
 OBJ = $(SRC:.c=.o)

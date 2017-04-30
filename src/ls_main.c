@@ -6,27 +6,25 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 14:58:56 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/30 03:53:20 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/04/30 04:10:07 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-#include <stdio.h> // Dont forget to delete
-
 int g_ls_opts = 0;
 
 int		ft_perror(const char *s)
 {
-	// ft_dprintf(2, "%{red}%s%s\n%{eoc}", s, strerror(errno));
+	// ft_dprintf(2, "%{red}%s%s\n%{eoc}", s, strerror(errno)); // TODO: Decide to use colors
 	ft_dprintf(2, "%s%s\n", s, strerror(errno));
 	return (-1);
 }
 
 int		ls_usage(char flag)
 {
-	ft_printf("ls: illegal option -- %c\n", flag);
-	ft_printf("usage: ls [-Ralrt] [file ...]\n");
+	ft_printf("ft_ls: illegal option -- %c\n", flag);
+	ft_printf("usage: ft_ls [-Ralrt] [file ...]\n");
 	return (-1);
 }
 
@@ -62,7 +60,7 @@ int		ls_parser(int argc, char **argv)
 	int i;
 
 	i = 0;
-	while (++i < argc && argv[i][0] == '-')
+	while (++i < argc && argv[i][0] == '-' && ft_strcmp(argv[i], "-"))
 	{
 		if (ls_getopts(argv[i]) == 0)
 			continue ;

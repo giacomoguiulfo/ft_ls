@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 00:44:09 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/24 05:00:35 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/04/30 04:50:50 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,17 +62,48 @@ void print_permissions(mode_t mode)
 	putchar((mode & S_IXOTH) ? 'x' : '-');
 }
 
+void ls_time(time_t f_time)
+{
+	// char **all;
+	// int i = 0;
+	//
+	// all = ft_strsplit(ctime(&f_time), ' ');
+	// while (all[i])
+	// 	printf("[i]: %s\n", all[i++]);
+	// return (all[--i]); // Change to ft_printf
+	time_t now;
+	time_t dn;
+	time_t diff;
+	time_t beg = 0;
+
+	now = time(NULL);
+	printf("NOW:  [%ld]\n", now);
+	printf("FILE: [%ld]\n", f_time);
+	printf("DIFF: [%ld]\n", now - f_time);
+	dn = now - f_time + now;
+	// diff = labs(now - f_time);
+	diff = labs(f_time - now);
+	printf("D + N: [%ld]\n", dn);
+	printf("C-NOW:   [%s]\n", ctime(&now));
+	printf("C-FILE:  [%s]\n", ctime(&f_time));
+	printf("C-DIFF:  [%s]\n", ctime(&diff));
+	printf("C-6MAGO: [%s]\n", ctime(&dn));
+	printf("Beg [%s]\n", ctime(&beg));
+
+}
+
 int	main(int argc, char **argv)
 {
 	if (argc != 2) return (0);
 	/* Program */
-	
+
 	struct passwd *pwd;
 	struct stat statbuf;
 	struct group   *grp;
 
 	printf("Name: %s\n", argv[1]);
 	lstat(argv[1], &statbuf);
+	printf("total %lld\n", statbuf.st_blocks);
 	printf("Type: ");
 	print_type(statbuf.st_mode);
 	printf("\nModes: ");
@@ -87,5 +118,31 @@ int	main(int argc, char **argv)
 	else
 		printf("Group: %-8d\n", statbuf.st_gid);
 	printf("Size: %9jd\n", (intmax_t)statbuf.st_size);
+	printf("stime: %ld\n", statbuf.st_mtime);
+	// printf("ctime(): %s\n", ctime(&statbuf.st_mtime));
+	ls_time(statbuf.st_mtimespec.tv_sec);
 	return (0);
+}
+
+void	ls_file_handle(t_dnarr *files)
+{
+	int i;
+	int padding[4];
+
+	i = 0;
+	ft_bzero(padding, sizeof(int) * 4);
+	while (i < files->end)
+		ls_padding_l(padding, ((t_file *)files->contents[i++])->statbuf);
+	ft_qsort(files->contents, 0, dnarr_count(files) - 1, (t_sortcast) ft_strcmp);
+	i = 0;
+	if (g_ls_opts & OPT_l)
+	{
+		while (i < files->end)
+			ls_file_l((t_file *)files->contents[i++], padding);
+	}
+	else
+	{
+		while (i < files->end)
+			ft_printf("%s\n", (char *)files->contents[i++]);
+	}
 }

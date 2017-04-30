@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 15:01:04 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/30 03:50:22 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/04/30 06:10:50 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <sys/xattr.h>
 # include <limits.h>
 
-// TODO: Enum for padding[]
+// TODO: Enum for padding[] and for action
 
 typedef struct	s_file
 {
@@ -40,20 +40,21 @@ enum			e_lsopts
 	OPT_R = 0x2,
 	OPT_a = 0x4,
 	OPT_r = 0x8,
-	OPT_t = 0xF
+	OPT_t = 0x10
 };
 
 int				ls_dir_content(t_dnarr **files, char *path);
 int				ls_print_dir(char *path);
 int				ls_args(int i, int argc, char **argv);
 char			*ls_pathname(char *path);
-int				cmpfunc(void *a, void *b);
+int				ls_lexcmp(void *a, void *b);
 void			ls_print_type(mode_t mode);
 void			ls_print_permissions(mode_t mode);
 void			ls_lm_time(time_t var_time);
 void			ls_padding_l(int *padding, struct stat statbuf);
 void			ls_print_link(char *path);
-
+void			ls_file_l(t_file *file, int *padding, char *name);
+void			ft_ls_sort(t_dnarr *files);
 
 
 #endif
