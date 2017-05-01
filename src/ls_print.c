@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 08:50:51 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/30 05:55:56 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/04/30 19:47:13 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int		ls_print_dir(char *path)
 	i = 0;
 	if (ls_dir_content(&files, path) == -1)
 	{
-		ft_dprintf(2, "ft_ls: %s: %s\n", ls_pathname(path), strerror(errno));
+		ft_dprintf(2, "ls: %s: %s\n", ls_pathname(path), strerror(errno));
 		return (-1);
 	}
 	if (files->end == 0)
@@ -122,7 +122,11 @@ int		ls_print_dir(char *path)
 		dnarr_clrdestroy(files);
 		return (-1);
 	}
+	// ft_printf("I am here and path is: [%s]\n", ((t_file *)files->contents[i])->path);
+	// ft_printf("I am here and name is: [%s]\n", ((t_file *)files->contents[i])->name);
 	ft_ls_sort(files);
+	// ft_printf("I am here and path is: [%s]\n", ((t_file *)files->contents[i])->path);
+	// ft_printf("I am here and name is: [%s]\n", ((t_file *)files->contents[i])->name);
 	if (g_ls_opts & OPT_l)
 		ls_dir_l(files);
 	else
@@ -137,6 +141,8 @@ int		ls_print_dir(char *path)
 				&& !(ft_strcmp(((t_file *)files->contents[i])->name, ".") == 0
 				|| ft_strcmp(((t_file *)files->contents[i])->name, "..") == 0))
 			{
+				// ft_printf("I am here and name is: [%s]\n", ((t_file *)files->contents[i])->name);
+				// ft_printf("I am here and path is: [%s]\n", ((t_file *)files->contents[i])->path);
 				ft_printf("\n%s:\n", ((t_file *)files->contents[i])->path);
 				ls_print_dir(((t_file *)files->contents[i])->path);
 			}

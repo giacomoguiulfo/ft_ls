@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 14:58:56 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/30 04:10:07 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/04/30 21:16:21 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ int		ft_perror(const char *s)
 
 int		ls_usage(char flag)
 {
-	ft_printf("ft_ls: illegal option -- %c\n", flag);
-	ft_printf("usage: ft_ls [-Ralrt] [file ...]\n");
+	ft_printf("ls: illegal option -- %c\n", flag);
+	// ft_printf("usage: ft_ls [-Ralrt] [file ...]\n");
+	ft_printf("usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]\n");
 	return (-1);
 }
 
@@ -34,7 +35,7 @@ int		ls_getopts(char *str)
 
 	i = 0;
 	if (!ft_strcmp(str, "--"))
-		return (0);
+		return (1);
 	while (str[++i])
 	{
 		if (str[i] == 'l')
@@ -57,12 +58,14 @@ int		ls_getopts(char *str)
 
 int		ls_parser(int argc, char **argv)
 {
+	int ret;
 	int i;
 
 	i = 0;
-	while (++i < argc && argv[i][0] == '-' && ft_strcmp(argv[i], "-"))
+	ret = 0;
+	while (++i < argc && argv[i][0] == '-' && ft_strcmp(argv[i], "-") && ret == 0)
 	{
-		if (ls_getopts(argv[i]) == 0)
+		if ((ret = ls_getopts(argv[i])) != -1)
 			continue ;
 		else
 			return (-1);

@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 09:01:18 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/30 06:06:09 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/04/30 20:13:45 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ls_naf_handle(t_dnarr *naf)
 	{
 		ft_qsort(naf->contents, 0, dnarr_count(naf) - 1, (t_sortcast) ft_strcmp);
 		while (i < naf->end)
-			ft_dprintf(2, "ft_ls: %s: %s\n", (char *)naf->contents[i++], strerror(errno)); // TODO: Instead of ls it could be argv[0]
+			ft_dprintf(2, "ls: %s: %s\n", (char *)naf->contents[i++], strerror(errno)); // TODO: Instead of ls it could be argv[0]
 	}
 	i = -1;
 	while (++i < naf->end)
@@ -65,7 +65,7 @@ void	ls_file_handle(t_dnarr *files)
 	}
 }
 
-void	ls_dirs_handle(t_dnarr *dirs, t_dnarr *files)
+void	ls_dirs_handle(t_dnarr *dirs, t_dnarr *files, t_dnarr *naf)
 {
 	int i;
 
@@ -75,7 +75,7 @@ void	ls_dirs_handle(t_dnarr *dirs, t_dnarr *files)
 		ft_ls_sort(dirs);
 		while (i < dirs->end)
 		{
-			if (!(((t_file *)dirs->contents[i])->path[0] == '/')) // TODO: Check this
+			if (!(((t_file *)dirs->contents[i])->path[0] == '/') && (dirs->end > 1 || files->end > 0 || naf->end > 0)) // TODO: Check this
 			// if (!(((t_file *)dirs->contents[j])->path[0] == '/') && dirs->end > 1) // TODO: Check this
 				ft_printf("%s%s:\n", (files->end > 0 || i) ? "\n" : "", ((t_file *)dirs->contents[i])->path);
 			ls_print_dir(((t_file *)dirs->contents[i++])->path);
@@ -104,7 +104,7 @@ void	ls_handle_all(t_dnarr **naf, t_dnarr **files, t_dnarr **dirs, int action)
 		if ((*files)->end > 0)
 			ls_file_handle(*files);
 		if ((*dirs)->end > 0)
-			ls_dirs_handle(*dirs, *files); // TODO: Change files to files->end
+			ls_dirs_handle(*dirs, *files, *naf); // TODO: Change files to files->end
 	}
 	else
 	{
@@ -127,6 +127,12 @@ int		ls_args(int i, int argc, char **argv)
 	ls_handle_all(&naf, &files, &dirs, 0);
 	while (i < argc)
 	{
+		if (argv[i][0] == 0)
+		{
+			ft_dprintf(2, "ls: fts_open: No such file or directory\n");
+			// TODO: Free stuff
+			exit(1);
+		}
 		tmp = dnarr_new(dirs);
 		if (lstat(argv[i], &tmp->statbuf) == -1)
 		{
