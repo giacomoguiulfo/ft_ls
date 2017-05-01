@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 09:01:18 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/30 20:13:45 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/05/01 14:59:48 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,9 +142,12 @@ int		ls_args(int i, int argc, char **argv)
 		}
 		tmp->name = ft_strdup(ls_pathname(argv[i])); // I dont need dups
 		tmp->path = ft_strdup(argv[i]); // I dont need dups
+		// ft_printf("NAME->: [%s]\n", tmp->name);
+		// ft_printf("PATH->: [%s]\n", tmp->path);
 		// if (S_ISDIR(tmp->statbuf.st_mode))
 		// if ((dir = opendir(tmp->path)) != NULL)
-		if (stat(argv[i], &tmp->statbuf) != 1 && S_ISDIR(tmp->statbuf.st_mode))
+		if (!(S_ISLNK(tmp->statbuf.st_mode) && (g_ls_opts & OPT_l)) &&
+			stat(argv[i], &tmp->statbuf) != 1 && S_ISDIR(tmp->statbuf.st_mode))
 		{
 			// closedir(dir);
 			dnarr_push(dirs, tmp);

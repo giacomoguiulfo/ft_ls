@@ -6,13 +6,13 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/29 19:54:11 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/30 19:43:29 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/05/01 14:07:51 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-void ls_print_type(mode_t mode)
+int	ls_print_type(mode_t mode)
 {
 	int bits;
 
@@ -20,9 +20,15 @@ void ls_print_type(mode_t mode)
 	if (bits == S_IFDIR)
 		ft_putchar('d');
 	else if (bits == S_IFCHR)
+	{
 		ft_putchar('c');
+		return (1);
+	}
 	else if (bits == S_IFBLK)
+	{
 		ft_putchar('b');
+		return (1);
+	}
 	else if (bits == S_IFLNK)
 		ft_putchar('l');
 	else if (bits == S_IFSOCK)
@@ -31,6 +37,7 @@ void ls_print_type(mode_t mode)
 		ft_putchar('f');
 	else
 		ft_putchar('-');
+	return (0);
 }
 
 void ls_print_permissions(mode_t mode)

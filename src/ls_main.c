@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 14:58:56 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/30 21:16:21 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/05/01 15:11:50 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int		ft_perror(const char *s)
 
 int		ls_usage(char flag)
 {
-	ft_printf("ls: illegal option -- %c\n", flag);
+	ft_dprintf(2 , "ls: illegal option -- %c\n", flag);
 	// ft_printf("usage: ft_ls [-Ralrt] [file ...]\n");
-	ft_printf("usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]\n");
+	ft_dprintf(2 ,"usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]\n");
 	return (-1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 15:01:04 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/30 06:10:50 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/05/01 14:01:26 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int				ls_print_dir(char *path);
 int				ls_args(int i, int argc, char **argv);
 char			*ls_pathname(char *path);
 int				ls_lexcmp(void *a, void *b);
-void			ls_print_type(mode_t mode);
+int				ls_print_type(mode_t mode);
 void			ls_print_permissions(mode_t mode);
 void			ls_lm_time(time_t var_time);
 void			ls_padding_l(int *padding, struct stat statbuf);

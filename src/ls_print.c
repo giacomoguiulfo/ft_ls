@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 08:50:51 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/04/30 19:47:13 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/05/01 14:05:35 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ void	ls_file_l(t_file *file, int *padding, char *name)
 {
 	struct passwd	*pwd;
 	struct group	*grp;
+	int				device;
 
-	ls_print_type(file->statbuf.st_mode);
+	device = ls_print_type(file->statbuf.st_mode);
 	ls_print_permissions(file->statbuf.st_mode);
 	ft_putstr(listxattr(file->path, 0, 0, XATTR_NOFOLLOW) > 0 ? "@" : " ");
 	ft_printf(" %*d", padding[0], file->statbuf.st_nlink);
@@ -31,7 +32,10 @@ void	ls_file_l(t_file *file, int *padding, char *name)
 		ft_printf("  %-*s", padding[2], grp->gr_name);
 	else
 		ft_printf("  %-8d", file->statbuf.st_gid); // TODO: Do I need this else?
-	ft_printf("  %*d", padding[3], (intmax_t)file->statbuf.st_size);
+	if (!device)
+		ft_printf("  %*d", padding[3], (intmax_t)file->statbuf.st_size); // TODO: intmax_t ??
+	else
+		ft_printf("  %ld, %ld", (long)major(file->statbuf.st_rdev), (long)minor(file->statbuf.st_rdev));
 	ls_lm_time(file->statbuf.st_mtime);
 	ft_printf(" %s", name); // TODO: Needs good formatting to difference
 	if (S_ISLNK(file->statbuf.st_mode))
