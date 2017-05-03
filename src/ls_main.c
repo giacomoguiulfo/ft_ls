@@ -6,26 +6,18 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 14:58:56 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/05/01 15:11:50 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/05/03 06:01:47 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
 
-int g_ls_opts = 0;
-
-int		ft_perror(const char *s)
-{
-	// ft_dprintf(2, "%{red}%s%s\n%{eoc}", s, strerror(errno)); // TODO: Decide to use colors
-	ft_dprintf(2, "%s%s\n", s, strerror(errno));
-	return (-1);
-}
+long int g_ls_opts = 0;
 
 int		ls_usage(char flag)
 {
-	ft_dprintf(2 , "ls: illegal option -- %c\n", flag);
-	// ft_printf("usage: ft_ls [-Ralrt] [file ...]\n");
-	ft_dprintf(2 ,"usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]\n");
+	ft_dprintf(2, "ls: illegal option -- %c\n", flag);
+	ft_dprintf(2, "usage: ft_ls [-Ralrt] [file ...]\n");
 	return (-1);
 }
 
@@ -48,8 +40,34 @@ int		ls_getopts(char *str)
 			g_ls_opts |= OPT_r;
 		else if (str[i] == 't')
 			g_ls_opts |= OPT_t;
+		else if (str[i] == 'S')
+			g_ls_opts |= OPT_S;
+		else if (str[i] == 'T')
+			g_ls_opts |= OPT_T;
+		else if (str[i] == 'A')
+			g_ls_opts |= OPT_A;
+		else if (str[i] == 'd')
+			g_ls_opts |= OPT_d;
+		else if (str[i] == 'f')
+		{
+			g_ls_opts |= OPT_a;
+			g_ls_opts |= OPT_f;
+		}
+		else if (str[i] == 'o')
+		{
+			g_ls_opts |= OPT_l;
+			g_ls_opts |= OPT_o;
+		}
+		else if (str[i] == 'g')
+		{
+			g_ls_opts |= OPT_l;
+			g_ls_opts |= OPT_g;
+		}
 		else if (str[i] == '1')
-			;
+		{
+			if (g_ls_opts & OPT_l)
+				g_ls_opts ^= OPT_l;
+		}
 		else
 			return (ls_usage(str[i]));
 	}
@@ -63,7 +81,8 @@ int		ls_parser(int argc, char **argv)
 
 	i = 0;
 	ret = 0;
-	while (++i < argc && argv[i][0] == '-' && ft_strcmp(argv[i], "-") && ret == 0)
+	while (++i < argc && argv[i][0] == '-' && ft_strcmp(argv[i], "-") &&
+			ret == 0)
 	{
 		if ((ret = ls_getopts(argv[i])) != -1)
 			continue ;
@@ -77,6 +96,8 @@ int		ls_parser(int argc, char **argv)
 	}
 	else
 	{
+		if (g_ls_opts & OPT_d)
+			return (ls_args(0, 1, ft_strsplit(".", ' ')));
 		if (ls_print_dir(".") == -1)
 			return (-1);
 	}

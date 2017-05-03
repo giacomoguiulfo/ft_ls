@@ -6,11 +6,13 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/29 19:54:11 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/05/01 14:07:51 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/05/03 04:57:00 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ls.h>
+
+extern long int g_ls_opts;
 
 int	ls_print_type(mode_t mode)
 {
@@ -77,7 +79,9 @@ void	ls_lm_time(time_t var_time)
 
 	currtime = time(0);
 	tmp = ctime(&var_time);
-	if (ABS(currtime - var_time) > 15780000)
+	if (g_ls_opts & OPT_T)
+		ft_printf(" %2.2s %3.3s %8.8s %4.4s", &tmp[8], &tmp[4], &tmp[11], &tmp[20]);
+	else if (ABS(currtime - var_time) > 15770000)
 		ft_printf(" %2.2s %3.3s  %4.4s", &tmp[8], &tmp[4], &tmp[20]);
 	else
 		ft_printf(" %2.2s %3.3s %5.5s", &tmp[8], &tmp[4], &tmp[11]);

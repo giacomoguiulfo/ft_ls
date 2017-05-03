@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 15:01:04 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/05/01 14:01:26 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/05/03 05:52:04 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,16 @@ enum			e_lsopts
 	OPT_R = 0x2,
 	OPT_a = 0x4,
 	OPT_r = 0x8,
-	OPT_t = 0x10
+	OPT_t = 0x10,
+	OPT_S = 0x20,
+	OPT_T = 0x40,
+	OPT_o = 0x80,
+	OPT_g = 0x100,
+	OPT_A = 0x200,
+	OPT_f = 0x400,
+	OPT_d = 0x800
 };
 
-int				ls_dir_content(t_dnarr **files, char *path);
 int				ls_print_dir(char *path);
 int				ls_args(int i, int argc, char **argv);
 char			*ls_pathname(char *path);
@@ -55,6 +61,7 @@ void			ls_padding_l(int *padding, struct stat statbuf);
 void			ls_print_link(char *path);
 void			ls_file_l(t_file *file, int *padding, char *name);
 void			ft_ls_sort(t_dnarr *files);
+void			ls_free_pn(t_dnarr *files);
 
 
 #endif
