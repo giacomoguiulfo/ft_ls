@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/27 08:50:51 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/05/03 05:59:10 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/05/03 06:18:15 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ls_file_l(t_file *file, int *padding, char *name)
 		ft_printf("%*jd", padding[3], (intmax_t)file->statbuf.st_size);
 	else
 		ft_printf("  %ld, %ld", (long)major(file->statbuf.st_rdev), (long)minor(file->statbuf.st_rdev));
-	ls_lm_time(file->statbuf.st_mtime);
+	ls_lm_time((g_ls_opts & OPT_c) ? file->statbuf.st_ctime : file->statbuf.st_mtime);
 	ft_printf(" %s", name); // TODO: Handle Color
 	if (S_ISLNK(file->statbuf.st_mode))
 		ls_print_link(file->path);

@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 15:01:04 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/05/03 05:52:04 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/05/03 06:19:09 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ enum			e_lsopts
 	OPT_g = 0x100,
 	OPT_A = 0x200,
 	OPT_f = 0x400,
-	OPT_d = 0x800
+	OPT_d = 0x800,
+	OPT_c = 0x1000
 };
 
 int				ls_print_dir(char *path);

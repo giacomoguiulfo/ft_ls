@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/29 19:54:11 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/05/03 04:57:00 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/05/03 06:30:48 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern long int g_ls_opts;
 
-int	ls_print_type(mode_t mode)
+int		ls_print_type(mode_t mode)
 {
 	int bits;
 
@@ -42,7 +42,7 @@ int	ls_print_type(mode_t mode)
 	return (0);
 }
 
-void ls_print_permissions(mode_t mode)
+void	ls_print_permissions(mode_t mode)
 {
 	ft_putchar((mode & S_IRUSR) ? 'r' : '-');
 	ft_putchar((mode & S_IWUSR) ? 'w' : '-');
@@ -67,20 +67,23 @@ void ls_print_permissions(mode_t mode)
 void	ls_padding_l(int *padding, struct stat statbuf)
 {
 	padding[0] = MAX(padding[0], ft_nblen(statbuf.st_nlink));
-	padding[1] = MAX(padding[1], (int)ft_strlen(getpwuid(statbuf.st_uid)->pw_name));
-	padding[2] = MAX(padding[2], (int)ft_strlen(getgrgid(statbuf.st_gid)->gr_name));
+	padding[1] = MAX(padding[1],
+							(int)ft_strlen(getpwuid(statbuf.st_uid)->pw_name));
+	padding[2] = MAX(padding[2],
+							(int)ft_strlen(getgrgid(statbuf.st_gid)->gr_name));
 	padding[3] = MAX(padding[3], ft_nblen(statbuf.st_size));
 }
 
 void	ls_lm_time(time_t var_time)
 {
-	char *tmp;
-	time_t currtime;
+	char	*tmp;
+	time_t	currtime;
 
 	currtime = time(0);
 	tmp = ctime(&var_time);
 	if (g_ls_opts & OPT_T)
-		ft_printf(" %2.2s %3.3s %8.8s %4.4s", &tmp[8], &tmp[4], &tmp[11], &tmp[20]);
+		ft_printf(" %2.2s %3.3s %8.8s %4.4s", &tmp[8], &tmp[4], &tmp[11],
+																	&tmp[20]);
 	else if (ABS(currtime - var_time) > 15770000)
 		ft_printf(" %2.2s %3.3s  %4.4s", &tmp[8], &tmp[4], &tmp[20]);
 	else
