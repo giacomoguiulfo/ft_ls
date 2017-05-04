@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 14:58:56 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/05/03 06:49:20 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/05/03 22:50:19 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,86 +14,16 @@
 
 long int g_ls_opts = 0;
 
-int		ls_usage(char flag)
+int				ls_ftsopen(t_dnarr *dirs, t_dnarr *files, t_dnarr *naf)
 {
-	ft_dprintf(2, "ls: illegal option -- %c\n", flag);
-	ft_dprintf(2, "usage: ft_ls [-ARSTacdfgolrt1] [file ...]\n");
+	ft_dprintf(2, "ls: fts_open: No such file or directory\n");
+	ls_free_pn(files);
+	ls_free_pn(dirs);
+	ls_handle_all(&naf, &files, &dirs, LS_KILL);
 	return (-1);
 }
 
-int		ls_moar_opts(char chr)
-{
-	if (chr == 'f')
-	{
-		g_ls_opts |= OPT_a;
-		g_ls_opts |= OPT_f;
-	}
-	else if (chr == 'o')
-	{
-		g_ls_opts |= OPT_l;
-		g_ls_opts |= OPT_o;
-	}
-	else if (chr == 'g')
-	{
-		g_ls_opts |= OPT_l;
-		g_ls_opts |= OPT_g;
-	}
-	else if (chr == '1')
-	{
-		if (g_ls_opts & OPT_l)
-			g_ls_opts ^= OPT_l;
-	}
-	else
-		return (ls_usage(chr));
-	return (0);
-}
-
-int		ls_more_opts(char chr)
-{
-	if (chr == 'c')
-		g_ls_opts |= OPT_c;
-	else if (chr == 'd')
-		g_ls_opts |= OPT_d;
-	else if (chr == 'S')
-		g_ls_opts |= OPT_S;
-	else if (chr == 'T')
-		g_ls_opts |= OPT_T;
-	else if (chr == 'A')
-		g_ls_opts |= OPT_A;
-	else
-		return (ls_moar_opts(chr));
-	return (0);
-}
-
-int		ls_getopts(char *str)
-{
-	int i;
-
-	i = 0;
-	if (!ft_strcmp(str, "--"))
-		return (1);
-	while (str[++i])
-	{
-		if (str[i] == 'l')
-			g_ls_opts |= OPT_l;
-		else if (str[i] == 'R')
-			g_ls_opts |= OPT_R;
-		else if (str[i] == 'a')
-			g_ls_opts |= OPT_a;
-		else if (str[i] == 'r')
-			g_ls_opts |= OPT_r;
-		else if (str[i] == 't')
-			g_ls_opts |= OPT_t;
-		else
-		{
-			if (ls_more_opts(str[i]) != 0)
-				return (-1);
-		}
-	}
-	return (0);
-}
-
-int		ls_parser(int argc, char **argv)
+static int		ls_parser(int argc, char **argv)
 {
 	int r;
 	int i;
@@ -109,20 +39,20 @@ int		ls_parser(int argc, char **argv)
 	}
 	if (i < argc)
 	{
-		if (ls_args(i, argc, argv) == -1)
+		if (ls_args(--i, argc, argv) == -1)
 			return (-1);
 	}
 	else
 	{
 		if (g_ls_opts & OPT_d)
-			return (ls_args(0, 1, ft_strsplit(".", ' ')));
+			return (ls_args(-1, 1, ft_strsplit(".", ' ')));
 		if (ls_print_dir(".") == -1)
 			return (-1);
 	}
 	return (0);
 }
 
-int		main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
 	if (argc == 1)
 	{

@@ -6,7 +6,7 @@
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 15:01:04 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/05/03 06:19:09 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/05/03 23:07:44 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,22 @@
 # include <sys/xattr.h>
 # include <limits.h>
 
-// TODO: Enum for padding[] and for action
-
-typedef struct	s_file
+typedef struct		s_file
 {
-	char		*name;
-	char		*path;
-	struct stat	statbuf;
-}				t_file;
+	char			*name;
+	char			*path;
+	struct stat		statbuf;
+	struct timespec	cmptime;
+}					t_file;
 
-enum			e_lsopts
+enum				e_lsact
+{
+	LS_CRTE,
+	LS_PRNT,
+	LS_KILL
+};
+
+enum				e_lsopts
 {
 	OPT_l = 0x1,
 	OPT_R = 0x2,
@@ -48,21 +54,37 @@ enum			e_lsopts
 	OPT_A = 0x200,
 	OPT_f = 0x400,
 	OPT_d = 0x800,
-	OPT_c = 0x1000
+	OPT_c = 0x1000,
+	OPT_u = 0x2000,
+	OPT_U = 0x4000
 };
 
-int				ls_print_dir(char *path);
-int				ls_args(int i, int argc, char **argv);
-char			*ls_pathname(char *path);
-int				ls_lexcmp(void *a, void *b);
-int				ls_print_type(mode_t mode);
-void			ls_print_permissions(mode_t mode);
-void			ls_lm_time(time_t var_time);
-void			ls_padding_l(int *padding, struct stat statbuf);
-void			ls_print_link(char *path);
-void			ls_file_l(t_file *file, int *padding, char *name);
-void			ft_ls_sort(t_dnarr *files);
-void			ls_free_pn(t_dnarr *files);
+/*
+** Main Functions
+*/
 
+int					ls_getopts(char *str);
+int					ls_print_dir(char *path);
+int					ls_args(int i, int argc, char **argv);
+void				ls_file_l(t_file *file, int *padding, char *name);
+void				ls_handle_all(t_dnarr **naf, t_dnarr **files,
+										t_dnarr **dirs, int act);
+void				ls_sort(t_dnarr *files);
+
+/*
+** Error Handling
+*/
+
+int					ls_ftsopen(t_dnarr *dirs, t_dnarr *files, t_dnarr *naf);
+void				ls_naf_handle(t_dnarr *naf);
+
+/*
+** LS Utils
+*/
+
+char				*ls_pathname(char *path);
+void				ls_print_link(char *path);
+void				ls_free_pn(t_dnarr *files);
+void				ls_padding_l(int *padding, struct stat statbuf);
 
 #endif

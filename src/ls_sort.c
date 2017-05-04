@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ls_multi.c                                         :+:      :+:    :+:   */
+/*   ls_sort.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/30 05:46:06 by gguiulfo          #+#    #+#             */
-/*   Updated: 2017/05/03 21:01:32 by gguiulfo         ###   ########.fr       */
+/*   Updated: 2017/05/03 23:06:23 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,84 +14,12 @@
 
 extern long int g_ls_opts;
 
-int		ls_lexcmp(void *a, void *b)
+static int			ls_lexcmp(void *a, void *b)
 {
 	return (ft_strcmp(((t_file *)(a))->path, ((t_file *)(b))->path));
 }
 
-// int		ls_timecmp(void *a, void *b)
-// {
-// 	long diff;
-// 	long ndiff;
-//
-// 	diff = ((t_file *)(b))->statbuf.st_mtimespec.tv_sec -
-// 			((t_file *)(a))->statbuf.st_mtimespec.tv_sec;
-// 	if (diff == 0)
-// 	{
-// 		ndiff = ((t_file *)(b))->statbuf.st_mtimespec.tv_nsec -
-// 				((t_file *)(a))->statbuf.st_mtimespec.tv_nsec;
-// 		if (ndiff == 0)
-// 			return (ft_strcmp(((t_file *)(a))->path, ((t_file *)(b))->path));
-// 		return (ndiff);
-// 	}
-// 	return (diff);
-// }
-//
-// int		ls_ctimecmp(void *a, void *b)
-// {
-// 	long diff;
-// 	long ndiff;
-//
-// 	diff = ((t_file *)(b))->statbuf.st_ctimespec.tv_sec -
-// 			((t_file *)(a))->statbuf.st_ctimespec.tv_sec;
-// 	if (diff == 0)
-// 	{
-// 		ndiff = ((t_file *)(b))->statbuf.st_ctimespec.tv_nsec -
-// 				((t_file *)(a))->statbuf.st_ctimespec.tv_nsec;
-// 		if (ndiff == 0)
-// 			return (ft_strcmp(((t_file *)(a))->path, ((t_file *)(b))->path));
-// 		return (ndiff);
-// 	}
-// 	return (diff);
-// }
-//
-// int		ls_atimecmp(void *a, void *b)
-// {
-// 	long diff;
-// 	long ndiff;
-//
-// 	diff = ((t_file *)(b))->statbuf.st_atimespec.tv_sec -
-// 			((t_file *)(a))->statbuf.st_atimespec.tv_sec;
-// 	if (diff == 0)
-// 	{
-// 		ndiff = ((t_file *)(b))->statbuf.st_atimespec.tv_nsec -
-// 				((t_file *)(a))->statbuf.st_atimespec.tv_nsec;
-// 		if (ndiff == 0)
-// 			return (ft_strcmp(((t_file *)(a))->path, ((t_file *)(b))->path));
-// 		return (ndiff);
-// 	}
-// 	return (diff);
-// }
-//
-// int		ls_btimecmp(void *a, void *b)
-// {
-// 	long diff;
-// 	long ndiff;
-//
-// 	diff = ((t_file *)(b))->statbuf.st_birthtimespec.tv_sec -
-// 			((t_file *)(a))->statbuf.st_birthtimespec.tv_sec;
-// 	if (diff == 0)
-// 	{
-// 		ndiff = ((t_file *)(b))->statbuf.st_birthtimespec.tv_nsec -
-// 				((t_file *)(a))->statbuf.st_birthtimespec.tv_nsec;
-// 		if (ndiff == 0)
-// 			return (ft_strcmp(((t_file *)(a))->path, ((t_file *)(b))->path));
-// 		return (ndiff);
-// 	}
-// 	return (diff);
-// }
-
-void	ls_get_timefmt(void *a, void *b)
+static inline void	ls_get_timefmt(void *a, void *b)
 {
 	if (g_ls_opts & OPT_c)
 	{
@@ -115,16 +43,17 @@ void	ls_get_timefmt(void *a, void *b)
 	}
 }
 
-int		ls_tmcmp(void *a, void *b)
+static int			ls_tmcmp(void *a, void *b)
 {
 	long diff;
 	long ndiff;
 
 	ls_get_timefmt(a, b);
-	diff = ((t_file *)(b))->cmptime.tv_sec  - ((t_file *)(a))->cmptime.tv_sec;
+	diff = ((t_file *)(b))->cmptime.tv_sec - ((t_file *)(a))->cmptime.tv_sec;
 	if (!diff)
 	{
-		ndiff = ((t_file *)(b))->cmptime.tv_nsec  - ((t_file *)(a))->cmptime.tv_nsec;
+		ndiff = ((t_file *)(b))->cmptime.tv_nsec -
+				((t_file *)(a))->cmptime.tv_nsec;
 		if (!ndiff)
 			return (ft_strcmp(((t_file *)(a))->path, ((t_file *)(b))->path));
 		return (ndiff);
@@ -132,7 +61,7 @@ int		ls_tmcmp(void *a, void *b)
 	return (diff);
 }
 
-int		ls_sizecmp(void *a, void *b)
+static int			ls_sizecmp(void *a, void *b)
 {
 	if (!(((t_file *)(b))->statbuf.st_size - ((t_file *)(a))->statbuf.st_size))
 		return (ft_strcmp(((t_file *)(a))->path, ((t_file *)(b))->path));
@@ -140,7 +69,7 @@ int		ls_sizecmp(void *a, void *b)
 			((t_file *)(a))->statbuf.st_size);
 }
 
-void	ft_ls_sort(t_dnarr *files)
+void				ls_sort(t_dnarr *files)
 {
 	if (g_ls_opts & OPT_f)
 		return ;
@@ -148,18 +77,8 @@ void	ft_ls_sort(t_dnarr *files)
 		ft_qsort(files->contents, 0, DNARR_COUNT(files) - 1,
 													(t_sortcast)ls_sizecmp);
 	else if (g_ls_opts & OPT_t)
-	{
-		ft_qsort(files->contents, 0, DNARR_COUNT(files) - 1, (t_sortcast)ls_tmcmp);
-	// 	if (g_ls_opts & OPT_c)
-	// 		ft_qsort(files->contents, 0, DNARR_COUNT(files) - 1,
-	// 												(t_sortcast)ls_ctimecmp);
-	// 	else if (g_ls_opts & OPT_U)
-	// 		ft_qsort(files->contents, 0, DNARR_COUNT(files) - 1,
-	// 												(t_sortcast)ls_btimecmp);
-	// 	else
-	// 		ft_qsort(files->contents, 0, DNARR_COUNT(files) - 1,
-	// 	(g_ls_opts & OPT_u) ? (t_sortcast)ls_atimecmp : (t_sortcast)ls_timecmp);
-	}
+		ft_qsort(files->contents, 0, DNARR_COUNT(files) - 1,
+													(t_sortcast)ls_tmcmp);
 	else
 		ft_qsort(files->contents, 0, DNARR_COUNT(files) - 1,
 													(t_sortcast)ls_lexcmp);
