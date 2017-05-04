@@ -6,7 +6,7 @@
 #    By: gguiulfo <gguiulfo@student.42.us.org>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/20 14:52:17 by gguiulfo          #+#    #+#              #
-#    Updated: 2017/05/03 21:54:12 by gguiulfo         ###   ########.fr        #
+#    Updated: 2017/05/04 00:18:41 by gguiulfo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,7 @@ NAME		:= ft_ls
 CC			:= gcc
 CFLAGS		+= -Wall -Wextra -Werror
 CFLAGS		+= -I includes -I libft/includes
-LDFLAGS		+= -L libft/ -lft
-# LDFLAGS		+= alloc_wrap.c
+LDFLAGS		:= -L libft/ -lft
 
 LIBFT		:= libft/libft.a
 
@@ -50,29 +49,3 @@ fclean: clean
 	@echo "\033[32mRemoved Executable\033[0m"
 
 re: fclean all
-
-
-# test: $(TEST)
-#
-# stats: $(STATS)
-#
-# list: $(LIST)
-#
-# sort: $(SORT)
-#
-# recur: $(RECUR)
-#
-# $(TEST):
-# 	@$(CC) $(CFLAGS) $(LDFLAGS) -o test test.c
-#
-# $(STATS):
-# 	@$(CC) $(CFLAGS) $(LDFLAGS) -o stats stats.c
-#
-# $(LIST):
-# 	@$(CC) $(CFLAGS) $(LDFLAGS) -o list list.c
-#
-# $(SORT):
-# 	@$(CC) $(CFLAGS) $(LDFLAGS) -o sort sort.c
-#
-# $(RECUR)
-# 	@$(CC) $(CFLAGS) $(LDFLAGS) -o recur recur.c
