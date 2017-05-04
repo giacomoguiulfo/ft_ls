@@ -48,3 +48,6 @@ Thumbs.db
 # Clion Files #
 .idea/
 cmake-build-debug/
+
+# Alloc Wrap
+alloc_wrap.c
