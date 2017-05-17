@@ -37,5 +37,6 @@ For more information, the PDF of this project can be found [here].
 git clone https://github.com/giacomoguiulfo/42-ft_ls.git
 make
 ./ft_ls [-ARSUacdfglortu1] [file ...]
+```
 
 [here]: https://github.com/giacomoguiulfo/42-ft_ls/blob/master/pdfs/ft_ls.en.pdf
