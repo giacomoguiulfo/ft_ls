@@ -22,7 +22,7 @@ For more information, the PDF of this project can be found [here].
                     on a line before the long listing
     - o:            List in long format, but omit the group id
     - R:            Recursively list subdirectories encountered
-    - r:            Reverse the order of the sort to get reverse lexicographical order or the oldest entries first (or largest                     files last, if combined with sort by size
+    - r:            Reverse the order of the sort to get reverse lexicographical order or the oldest entries first (or largest files last, if combined with sort by size
     - S:            Sort files by size
     - T:            When used with the -l (lowercase letter ``ell'') option, display complete time information for the file
     - t:            Sort by time modified (most recently modified first) before sorting the operands by lexicographical order
